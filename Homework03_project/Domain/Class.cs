@@ -4,7 +4,7 @@
     {
         private int Id { get; }
         private string Name { get; }
-        private DateOnly Dob { get; }
+        private string Dob { get; }
         private string Position { get; }
         private string Club { get; }
         private string Nationality { get; }
@@ -12,7 +12,7 @@
         public Handballer(
         int id,
         string name,
-        DateOnly dob,
+        string dob,
         string position,
         string club,
         string nationality)
