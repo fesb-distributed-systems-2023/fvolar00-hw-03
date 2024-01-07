@@ -1,0 +1,8 @@
+CREATE TABLE "Players" (
+	"ID"	INTEGER NOT NULL UNIQUE,
+	"Name"	TEXT,
+	"Age"	INTEGER,
+	"Country"	TEXT,
+	"Position"	TEXT,
+	PRIMARY KEY("ID" AUTOINCREMENT)
+);
