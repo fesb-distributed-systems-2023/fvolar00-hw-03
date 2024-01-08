@@ -2,12 +2,12 @@
 {
     public class Handballer
     {
-        private int Id { get; }
-        private string Name { get; }
-        private string Dob { get; }
-        private string Position { get; }
-        private string Club { get; }
-        private string Nationality { get; }
+        public int Id { get; }
+        public string Name { get; set; }
+        public string Dob { get; }
+        public string Position { get; }
+        public string Club { get; }
+        public string Nationality { get; }
 
         public Handballer(
         int id,

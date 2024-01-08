@@ -1,0 +1,2 @@
+DELETE FROM Players 
+WHERE ID = 3;
