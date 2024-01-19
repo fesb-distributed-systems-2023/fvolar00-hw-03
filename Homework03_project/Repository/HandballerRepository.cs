@@ -3,7 +3,7 @@ using Homework03_project.Repository;
 
 namespace Homework03_project.Repository
 {
-    public class HandballerRepository : IHandballerRepository
+    public class HandballerRepository
     {
 
         private static List<Handballer> _players = new List<Handballer>();
