@@ -1,68 +1,89 @@
-﻿using Homework03_project.Domain;
-using Homework03_project.Repository;
+﻿using Homework03_project.Controllers.DTO;
+using Homework03_project.Domain;
+using Homework03_project.Logic;
 using Microsoft.AspNetCore.Mvc;
+using Homework03_project.Filters;
 
 namespace Homework03_project.Controllers
 {
+    [ErrorFilter]
     [ApiController]
     public class HandballersController : Controller
     {
-        private readonly IHandballerRepository _handballerRepository;
+        private readonly IHandballerLogic _handballerLogic;
 
-        public HandballersController(IHandballerRepository handballerRepository)
+        public HandballersController(IHandballerLogic handballerLogic)
         {
-            _handballerRepository = handballerRepository;
+            _handballerLogic = handballerLogic;
         }
         [HttpPost("/Players/New")]
-        public IActionResult CreatePlayer([FromBody]Handballer player)
+        public IActionResult CreatePlayer([FromBody]HandballerDTO player)
         {
-            _handballerRepository.CreatePlayer(player);
-            return Ok("Player created");
+            try
+            {
+                _handballerLogic.CreatePlayer(player.ToModel());
+                return Ok("Player created");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("/Players/Delete/{id}")]
         public IActionResult DeletePlayer([FromRoute]int id)
         {
-            bool succ = _handballerRepository.DeletePlayer(id);
-            if (succ)
+            try
             {
+                if(id == 0)
+                {
+                    return BadRequest("ID cannot be empty");
+                }
+                _handballerLogic.DeletePlayer(id);
                 return Ok();
             }
-            else
+            catch(Exception ex)
             {
-                return NotFound();
+                return BadRequest(ex);
             }
         }
         [HttpGet("/Players/Get/All")]
         public IActionResult GetPlayers()
         {
-            IEnumerable<Handballer> allPlayers = _handballerRepository.GetAllPlayers();
-            return Ok(allPlayers);
+            try
+            {
+                var allPlayers = _handballerLogic.GetAllPlayers().Select(x => HandballerDTO.FromModel(x));
+                return Ok(allPlayers);
+            }
+            catch(Exception ex)
+            {
+                return NotFound();
+            }
         }
         [HttpGet("/Players/Get/{id}")]
         public IActionResult GetPlayer([FromRoute]int id)
         {
-            Handballer player = _handballerRepository.GetPlayer(id);
+            var player = _handballerLogic.GetPlayer(id);
             if(player == null)
             {
                 return NotFound();
             }
             else
             {
-                return Ok(player);
+                return Ok(HandballerDTO.FromModel(player));
             }
         }
         [HttpPut("/Players/Update/{id}")]
         public IActionResult UpdatePlayer([FromRoute]int id, [FromQuery]string name)
         {
-            bool succ = _handballerRepository.UpdatePlayer(id, name);
-            if (succ)
+            try
             {
-                return Ok($"Player with ID = {id} updated");
+                _handballerLogic.UpdatePlayer(id, name);
+                return Ok();
             }
-            else
+            catch(Exception ex)
             {
-                return NotFound();
+                return NotFound(ex);
             }
         }
     }

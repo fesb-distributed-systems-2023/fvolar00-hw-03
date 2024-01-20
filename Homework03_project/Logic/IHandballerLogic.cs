@@ -1,8 +1,8 @@
 ﻿using Homework03_project.Domain;
 
-namespace Homework03_project.Repository
+namespace Homework03_project.Logic
 {
-    public interface IHandballerRepository
+    public interface IHandballerLogic
     {
         public void CreatePlayer(Handballer player);
         public void UpdatePlayer(int id, string name);
